@@ -1,0 +1,16 @@
+%{
+#include <stdio.h>
+#include "postfix.tab.h"
+%}
+
+%%
+
+[0-9]+      {return tNUM;}
+
+[ \n\t]* 
+.           {return yytext[0];}
+%%
+
+int yywrap(){
+    return 1;
+}
