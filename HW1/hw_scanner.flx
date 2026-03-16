@@ -1,0 +1,41 @@
+%{
+#include <stdio.h>
+int line_num = 1;
+%}
+
+%%
+[\n]        {line_num++;}
+[ \r\t]+        {}
+
+"device"    {printf("%d_tDEVICE\n", line_num);}
+"rule"      {printf("%d_tRULE\n", line_num);}
+"when"      {printf("%d_tWHEN\n", line_num);}
+"then"      {printf("%d_tTHEN\n", line_num);}
+"time"      {printf("%d_tTIME\n", line_num);}
+"in"        {printf("%d_tTIN\n", line_num);}
+"and"       {printf("%d_tAND\n", line_num);}
+"or"        {printf("%d_tOR\n", line_num);}
+"not"       {printf("%d_tNOT\n", line_num);}
+
+"sensor"    {printf("%d_tSENSOR\n", line_num);}
+"light"     {printf("%d_tLIGHT\n", line_num);}
+"switch"    {printf("%d_tSWITCH\n", line_num);}
+"accent"    {printf("%d_tACCENT\n", line_num);}
+"ambient"   {printf("%d_tTAMBIENT\n", line_num);}
+"task"      {printf("%d_tTASK\n", line_num);}
+"on"        {printf("%d_tTON\n", line_num);}
+"off"       {printf("%d_tOFF\n", line_num);}
+
+..          {printf("%d_tDOTDOT\n", line_num);}
+>=          {printf("%d_tGE\n", line_num);}
+>           {printf("%d_tGT\n", line_num);}
+<=          {printf("%d_tLE\n", line_num);}
+<           {printf("%d_tLT\n", line_num);}
+
+
+%%
+
+int main() {
+    yylex();
+    return 0;
+}
