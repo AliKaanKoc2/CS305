@@ -1,0 +1,66 @@
+%{
+#include <stdio.h>
+int line_num = 1;
+int comment_Depth = 0;
+%}
+%x COMMENT
+
+%%
+
+[\n]                    {line_num++;}
+[ \r\t]+                {}
+
+"/*"                    {BEGIN(COMMENT); comment_Depth++;}
+<COMMENT>"/*"           {comment_Depth++;}
+<COMMENT>"*/"           {if(--comment_Depth == 0){BEGIN(INITIAL);}}
+<COMMENT>\n             {line_num++;}
+<COMMENT>.              {}
+
+"//"[^\n]*              {}
+
+"device"                {printf("%d_tDEVICE\n", line_num);}
+"rule"                  {printf("%d_tRULE\n", line_num);}
+"when"                  {printf("%d_tWHEN\n", line_num);}
+"then"                  {printf("%d_tTHEN\n", line_num);}
+"time"                  {printf("%d_tTIME\n", line_num);}
+"in"                    {printf("%d_tIN\n", line_num);}
+"and"                   {printf("%d_tAND\n", line_num);}
+"or"                    {printf("%d_tOR\n", line_num);}
+"not"                   {printf("%d_tNOT\n", line_num);}
+
+"sensor"                {printf("%d_tSENSOR\n", line_num);}
+"light"                 {printf("%d_tLIGHT\n", line_num);}
+"switch"                {printf("%d_tSWITCH\n", line_num);}
+"accent"                {printf("%d_tACCENT\n", line_num);}
+"ambient"               {printf("%d_tAMBIENT\n", line_num);}
+"task"                  {printf("%d_tTASK\n", line_num);}
+"on"                    {printf("%d_tON\n", line_num);}
+"off"                   {printf("%d_tOFF\n", line_num);}
+
+".."                    {printf("%d_tDOTDOT\n", line_num);}
+">="                    {printf("%d_tGE\n", line_num);}
+">"                     {printf("%d_tGT\n", line_num);}
+"<="                    {printf("%d_tLE\n", line_num);}
+"<"                     {printf("%d_tLT\n", line_num);}
+"=="                    {printf("%d_tEQEQ\n", line_num);}
+"!="                    {printf("%d_tNE\n", line_num);}
+"="                     {printf("%d_tEQ\n", line_num);}
+"{"                     {printf("%d_tLBRACE\n", line_num);}
+"}"                     {printf("%d_tRBRACE\n", line_num);}
+"("                     {printf("%d_tLPAREN\n", line_num);}
+")"                     {printf("%d_tRPAREN\n", line_num);}
+":"                     {printf("%d_tCOLON\n", line_num);}
+";"                     {printf("%d_tSEMI\n", line_num);}
+
+[0-9]{2}:[0-9]{2}       {printf("%d_tTIMEVALUE_(%s)\n", line_num, yytext);}
+0|([1-9][0-9]*)         {printf("%d_tINT_(%d)\n", line_num, atoi(yytext));}
+[a-zA-Z_][a-zA-Z0-9_]*  {printf("%d_tID_(%s)\n", line_num, yytext);}
+\"[^\"\n]*\"            {printf("%d_tSTRING_(%s)\n", line_num, yytext);}
+
+.                       {printf("%d_ILLEGAL_CHARACTER_(%s)\n", line_num, yytext);}
+%%
+
+int main() {
+    yylex();
+    return 0;
+}

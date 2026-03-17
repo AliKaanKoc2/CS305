@@ -1,0 +1,5 @@
+lex.yy.c
+scanner
+ali.koc-hw1
+*.txt
+.DS_Store
