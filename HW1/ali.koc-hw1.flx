@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 int line_num = 1;
 int comment_Depth = 0;
 %}
