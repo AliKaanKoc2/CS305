@@ -1,0 +1,111 @@
+%{
+/*
+ * scanner.flx - Flex scanner for HA (Home Automation) language
+ * HW2: Syntax Analysis (integrated with Bison parser)
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "parser.tab.h"
+
+int multi_comment_counter = 0;
+
+%}
+
+%option noyywrap
+%option yylineno
+%x single_comment
+%x multi_comment
+
+/* Definitions */
+DIGIT       [0-9]
+LETTER      [A-Za-z_]
+ALNUM       [A-Za-z0-9_]
+
+ID          {LETTER}{ALNUM}*
+TIME        {DIGIT}{DIGIT}:{DIGIT}{DIGIT}
+INT         0|[1-9]{DIGIT}*
+STRING      \"[^"\n]*\"
+
+%%
+
+[ \t\r\n]+  { /* skip whitespace including newlines */ }
+
+"//"					BEGIN(single_comment);
+<single_comment>\n		BEGIN(INITIAL);
+<single_comment>.
+
+"/*"					multi_comment_counter++; BEGIN(multi_comment);
+<multi_comment>"/*"		multi_comment_counter++;
+<multi_comment>"*/"		{
+							multi_comment_counter--;
+							if (multi_comment_counter == 0) {
+								BEGIN(INITIAL);
+							}
+							else {
+								;
+							}
+						}
+<multi_comment>.
+<multi_comment>\n
+
+ /* Keywords */
+"device"    { return tDEVICE; }
+"rule"      { return tRULE; }
+"when"      { return tWHEN; }
+"then"      { return tTHEN; }
+"time"      { return tTIME; }
+"in"        { return tIN; }
+"and"       { return tAND; }
+"or"        { return tOR; }
+"not"       { return tNOT; }
+
+ /* Device types */
+"sensor"    { return tSENSOR; }
+"light"     { return tLIGHT; }
+"switch"    { return tSWITCH; }
+
+ /* Brightness levels for light */
+"accent"    { return tACCENT; }
+"ambient"   { return tAMBIENT; }
+"task"      { return tTASK; }
+
+ /* Switch states */
+"on"        { return tON; }
+"off"       { return tOFF; }
+
+ /* Multi-character operators (must come before single char) */
+".."        { return tDOTDOT; }
+">="        { return tGE; }
+"<="        { return tLE; }
+"=="        { return tEQEQ; }
+"!="        { return tNE; }
+
+ /* Single-character punctuation and operators */
+"{"         { return tLBRACE; }
+"}"         { return tRBRACE; }
+"("         { return tLPAREN; }
+")"         { return tRPAREN; }
+":"         { return tCOLON; }
+";"         { return tSEMI; }
+"="         { return tEQ; }
+">"         { return tGT; }
+"<"         { return tLT; }
+
+ /* Time literal */
+{TIME}      { return tTIMEVALUE; }
+
+ /* Integer literal */
+{INT}       { return tINT; }
+
+ /* String literal */
+{STRING}    { return tSTRING; }
+
+ /* Identifier */
+{ID}        { return tID; }
+
+ /* Error - illegal character */
+.           { return yytext[0]; }
+
+%%
