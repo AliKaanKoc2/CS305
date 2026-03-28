@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "parser.tab.h"
+#include "ali.koc-hw2.tab.h"
 
 int multi_comment_counter = 0;
 

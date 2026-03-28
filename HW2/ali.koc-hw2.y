@@ -14,7 +14,7 @@ void yyerror(const char *s);
 
 program : declarations ;
 
-declarations : declaration declaration
+declarations : declarations declaration
              | /* empty */
 ;
 
@@ -36,14 +36,16 @@ action_list : action
 
 action: tID tEQ state tSEMI;
 
-bool_low : 
+bool_low :  bool_mid
+          | bool_low tOR bool_mid;
 
-bool_mid :
+bool_mid :  bool_high  
+          | bool_mid tAND bool_high;
 
 bool_high : predicate   
           | tNOT bool_high
-          | 
-        
+          | tLPAREN bool_low tRPAREN
+;       
 
 predicate : tID rel_op tINT
           | tTIME tIN tTIMEVALUE tDOTDOT tTIMEVALUE
