@@ -29,26 +29,10 @@ typedef struct Predicate
     int line;
     union
     {
-        struct 
-        {
-            char *device;
-            CmpOp op;
-            int val;
-        } numCmp;
-        struct 
-        {
-            char *device;
-            StateKind state;
-            CmpOp op;
-        } stateCmp;
-        struct 
-        {
-            int hh1, mm1, hh2, mm2;
-        } timeRange;
-        struct
-        {
-            int hh, mm;
-        } timePoint;
+        struct  {char *device; CmpOp op; int val;} numCmp;
+        struct  {char *device; StateKind state; CmpOp op;} stateCmp;
+        struct  {int hh1, mm1, hh2, mm2;} timeRange;
+        struct  {int hh, mm;} timePoint;
 
     } u;
 
@@ -57,25 +41,14 @@ typedef struct Predicate
 typedef struct BoolExpr
 {
     BoolKind kind;
-    union 
+    union
     {
-        struct 
-        {
-            struct BoolExpr *left, *right;
-        } andOr;
-
-        struct 
-        {
-            struct BoolExpr * ptr;
-        } bool_not;
-
-        struct 
-        {
-            Predicate* predicate;
-        } pred;
+        struct  {struct BoolExpr *left, *right;} andOr;
+        struct  {struct BoolExpr * ptr;} bool_not;
+        struct  {Predicate* predicate;} pred;
 
     } u;
-    
+
 } BoolExpr;
 
 typedef struct Rule
