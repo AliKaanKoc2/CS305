@@ -60,4 +60,10 @@ typedef struct Rule
     struct Rule *next;
 } Rule;
 
+extern Device *deviceHead;
+extern Rule *ruleHead;
+
+void appendDevice(Device *d);
+void appendRule(Rule *r);
+
 #endif

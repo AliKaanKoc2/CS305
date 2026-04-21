@@ -3,6 +3,9 @@
 #include <string.h>
 #include "ast.h"
 
+Device *deviceHead = NULL;
+Rule *ruleHead = NULL;
+
 Device *makeDevice(char *name, DeviceType type, int line)
 {
     Device *ptr = malloc(sizeof(Device));
@@ -121,4 +124,32 @@ Rule *makeRule(char *name, int braceLine, BoolExpr *when, Action *then)
     ptr->next = NULL;
 
     return ptr;
+}
+
+void appendDevice(Device *d)
+{
+    if (deviceHead == NULL){deviceHead = d;}
+    else
+    {
+        Device *curr = deviceHead;
+        while(curr->next != NULL)
+        {
+            curr = curr->next;
+        }
+        curr->next = d;
+    }
+}
+
+void appendRule(Rule *r)
+{
+    if (ruleHead == NULL){ruleHead = r;}
+    else
+    {
+        Rule *curr = ruleHead;
+        while(curr->next != NULL)
+        {
+            curr = curr->next;
+        }
+        curr->next = r;
+    }
 }
