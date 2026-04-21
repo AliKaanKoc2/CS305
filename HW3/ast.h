@@ -30,7 +30,7 @@ typedef struct Predicate
     union
     {
         struct  {char *device; CmpOp op; int val;} numCmp;
-        struct  {char *device; StateKind state; CmpOp op;} stateCmp;
+        struct  {char *device; CmpOp op; StateKind state; } stateCmp;
         struct  {int hh1, mm1, hh2, mm2;} timeRange;
         struct  {int hh, mm;} timePoint;
 
@@ -59,6 +59,17 @@ typedef struct Rule
     Action *then;
     struct Rule *next;
 } Rule;
+
+Device *makeDevice(char *, DeviceType, int);
+Action *makeAction(char *, StateKind, int);
+Predicate *makeNumCmp(char *, CmpOp, int, int);
+Predicate *makeStateCmp(char *, CmpOp, StateKind, int);
+Predicate *makeTimeRange(int, int, int, int, int);
+Predicate *makeTimePoint(int, int, int);
+BoolExpr *makeAndOr(BoolKind, BoolExpr *, BoolExpr *);
+BoolExpr *makeNot(BoolExpr *);
+BoolExpr *makePred(Predicate *);
+Rule *makeRule(char *, int, BoolExpr *, Action *);
 
 extern Device *deviceHead;
 extern Rule *ruleHead;

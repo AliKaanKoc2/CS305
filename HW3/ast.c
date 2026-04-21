@@ -43,15 +43,16 @@ Predicate *makeNumCmp(char *device, CmpOp op, int val, int line)
     return ptr;
 }
 
-Predicate *makeStateCmp(char *device, StateKind state, CmpOp op, int line)
+Predicate *makeStateCmp(char *device, CmpOp op, StateKind state, int line)
 {
     Predicate *ptr = malloc(sizeof(Predicate));
 
     ptr->kind = P_STATECMP;
     ptr->line = line;
     ptr->u.stateCmp.device = strdup(device);
-    ptr->u.stateCmp.state = state;
     ptr->u.stateCmp.op = op;
+    ptr->u.stateCmp.state = state;
+    
 
     return ptr;
 }
