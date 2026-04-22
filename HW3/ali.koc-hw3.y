@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "ast.h"
 #include "check.h"
+#include "print.h"
 extern int yylineno;
 int yylex();
 
@@ -178,7 +179,7 @@ int main()
         checkRules();
         if(errorCount == 0)
         {
-            printf("OK\n");
+            printReport();
         }	
 		return 0;
 	}

@@ -13,4 +13,8 @@ void checkAction(Action *);
 
 Device *findDevice(char *name);
 
+const char *deviceTypeStr(DeviceType t);
+const char *stateStr(StateKind s);
+const char *cmpOpStr(CmpOp op);
+
 #endif

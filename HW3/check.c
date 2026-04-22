@@ -23,6 +23,16 @@ const char* stateStr(StateKind s)
     return "";
 }
 
+const char* cmpOpStr(CmpOp op) {
+    if (op == GT) return ">";
+    if (op == LT) return "<";
+    if (op == GE) return ">=";
+    if (op == LE) return "<=";
+    if (op == EQEQ) return "==";
+    if (op == NE) return "!=";
+    return "";
+}
+
 int isOnOff(StateKind s) 
 { 
     return s == ON || s == OFF; 
