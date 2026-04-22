@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ast.h"
 #include "parser.tab.h"
 
 int multi_comment_counter = 0;
@@ -94,16 +95,20 @@ STRING      \"[^"\n]*\"
 "<"         { return tLT; }
 
  /* Time literal */
-{TIME}      { return tTIMEVALUE; }
+{TIME}      { 
+			  yylval.time.hh = ( yytext[0] - '0' ) * 10 + ( yytext[1] - '0' );
+			  yylval.time.mm = ( yytext[3] - '0' ) * 10 + ( yytext[4] - '0' );
+			  return tTIMEVALUE; 
+			}
 
  /* Integer literal */
-{INT}       { return tINT; }
+{INT}       { yylval.ival = atoi(yytext); return tINT; }
 
  /* String literal */
-{STRING}    { return tSTRING; }
+{STRING}    { yylval.sval = strdup(yytext); return tSTRING; }
 
  /* Identifier */
-{ID}        { return tID; }
+{ID}        { yylval.sval = strdup(yytext); return tID; }
 
  /* Error - illegal character */
 .           { return yytext[0]; }
