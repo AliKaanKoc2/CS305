@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include "ast.h"
+#include "check.h"
 extern int yylineno;
 int yylex();
 
@@ -173,7 +174,11 @@ int main()
 	}
 	else {
 		// Successful parsing
-		printf("OK\n");
+        checkDevices();
+        if(errorCount == 0)
+        {
+            printf("OK\n");
+        }	
 		return 0;
 	}
 }
