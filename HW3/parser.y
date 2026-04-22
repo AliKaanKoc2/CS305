@@ -175,6 +175,7 @@ int main()
 	else {
 		// Successful parsing
         checkDevices();
+        checkRules();
         if(errorCount == 0)
         {
             printf("OK\n");
