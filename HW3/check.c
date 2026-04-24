@@ -51,7 +51,7 @@ void checkDevices()
         {
             if(strcmp(d->name,earlier->name) == 0)
             {
-                printf("%d DUPLICATE DEVICE (%s)\n", d->line, d->name);
+                printf("%d_DUPLICATE_DEVICE_(%s)\n", d->line, d->name);
                 errorCount++;
                 break;
             }
@@ -67,7 +67,7 @@ void checkRules()
         {
             if(strcmp(r->name,earlier->name) == 0)
             {
-                printf("%d DUPLICATE RULE (%s)\n", r->braceLine, r->name);
+                printf("%d_DUPLICATE_RULE_(%s)\n", r->braceLine, r->name);
                 errorCount++;
                 break;
             }
@@ -87,7 +87,7 @@ void checkPredicate(Predicate *p)
         Device *d = findDevice(p->u.numCmp.device);
         if (d == NULL)
         {
-            printf("%d UNDECLARED DEVICE (%s)\n", p->line, p->u.numCmp.device);
+            printf("%d_UNDECLARED_DEVICE_(%s)\n", p->line, p->u.numCmp.device);
             errorCount++;
             return;
         }
@@ -95,7 +95,7 @@ void checkPredicate(Predicate *p)
         {
             if(d->type != SENSOR)
             {
-                printf("%d TYPE ERROR (%s;expected=sensor;found=%s)\n", p->line, p->u.numCmp.device, deviceTypeStr(d->type));
+                printf("%d_TYPE_ERROR_(%s;expected=sensor;found=%s)\n", p->line, p->u.numCmp.device, deviceTypeStr(d->type));
                 errorCount++;
             }
         }
@@ -105,7 +105,7 @@ void checkPredicate(Predicate *p)
         Device *d = findDevice(p->u.stateCmp.device);
         if (d == NULL)
         {
-            printf("%d UNDECLARED DEVICE (%s)\n", p->line, p->u.stateCmp.device);
+            printf("%d_UNDECLARED_DEVICE_(%s)\n", p->line, p->u.stateCmp.device);
             errorCount++;
             return;
         }
@@ -113,20 +113,20 @@ void checkPredicate(Predicate *p)
         {
             if(d->type == SENSOR)
             {
-                printf("%d TYPE ERROR (%s;expected=actuator;found=sensor)\n", p->line, p->u.stateCmp.device);
+                printf("%d_TYPE_ERROR_(%s;expected=actuator;found=sensor)\n", p->line, p->u.stateCmp.device);
                 errorCount++;
                 return;
             }
 
             if(d->type == LIGHT && isOnOff(p->u.stateCmp.state))
             {
-                printf("%d STATE ERROR (%s;expected=brightness;found=%s)\n", p->line, p->u.stateCmp.device, stateStr(p->u.stateCmp.state));
+                printf("%d_STATE_ERROR_(%s;expected=brightness;found=%s)\n", p->line, p->u.stateCmp.device, stateStr(p->u.stateCmp.state));
                 errorCount++;
             }
 
             if(d->type == SWITCH && isBrightness(p->u.stateCmp.state))
             {
-                printf("%d STATE ERROR (%s;expected=on/off;found=%s)\n", p->line, p->u.stateCmp.device, stateStr(p->u.stateCmp.state));
+                printf("%d_STATE_ERROR_(%s;expected=on/off;found=%s)\n", p->line, p->u.stateCmp.device, stateStr(p->u.stateCmp.state));
                 errorCount++;
             }
         }
@@ -136,12 +136,12 @@ void checkPredicate(Predicate *p)
         int hour1 = p->u.timeRange.hh1, hour2 = p->u.timeRange.hh2, min1 = p->u.timeRange.mm1, min2 = p->u.timeRange.mm2;
         if (hour1 < 0 || hour1 > 23 || min1 < 0 || min1 > 59)
         {
-            printf("%d TIME ERROR (%02d:%02d)\n", p->line, hour1, min1);
+            printf("%d_TIME_ERROR_(%02d:%02d)\n", p->line, hour1, min1);
             errorCount++;
         }
         if (hour2 < 0 || hour2 > 23 || min2 < 0 || min2 > 59)
         {
-            printf("%d TIME ERROR (%02d:%02d)\n", p->line, hour2, min2);
+            printf("%d_TIME_ERROR_(%02d:%02d)\n", p->line, hour2, min2);
             errorCount++;
         }
     }
@@ -150,7 +150,7 @@ void checkPredicate(Predicate *p)
         int hour = p->u.timePoint.hh, min = p->u.timePoint.mm;
         if (hour < 0 || hour > 23 || min < 0 || min > 59)
         {
-            printf("%d TIME ERROR (%02d:%02d)\n", p->line, hour, min);
+            printf("%d_TIME_ERROR_(%02d:%02d)\n", p->line, hour, min);
             errorCount++;
         }
     }
@@ -183,27 +183,27 @@ void checkAction(Action *act)
     Device *d = findDevice(act->name);
     if ( d == NULL )
     {
-        printf("%d UNDECLARED DEVICE (%s)\n", act->line, act->name);
+        printf("%d_UNDECLARED_DEVICE_(%s)\n", act->line, act->name);
         errorCount++;
         return;
     }
 
     else if ( d->type == SENSOR )
     {
-        printf("%d TYPE ERROR (%s;expected=actuator;found=sensor)\n", act->line, act->name);
+        printf("%d_TYPE_ERROR_(%s;expected=actuator;found=sensor)\n", act->line, act->name);
         errorCount++;
         return;
     }
 
     if(d->type == LIGHT && isOnOff(act->state))
     {
-        printf("%d STATE ERROR (%s;expected=brightness;found=%s)\n", act->line, act->name, stateStr(act->state));
+        printf("%d_STATE_ERROR_(%s;expected=brightness;found=%s)\n", act->line, act->name, stateStr(act->state));
         errorCount++;
     }
 
     if(d->type == SWITCH && isBrightness(act->state))
     {
-        printf("%d STATE ERROR (%s;expected=on/off;found=%s)\n", act->line, act->name, stateStr(act->state));
+        printf("%d_STATE_ERROR_(%s;expected=on/off;found=%s)\n", act->line, act->name, stateStr(act->state));
         errorCount++;
     }
 }
