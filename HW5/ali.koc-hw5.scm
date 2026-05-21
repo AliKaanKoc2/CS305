@@ -148,9 +148,11 @@
          (let ((val (s7 (caddr expr) env)))
            (display "cs305: ")
            (if (error-value? val)
-               (begin (display "ERROR") (newline) (repl env))
-               (begin (display (cadr expr)) (newline)
-                      (repl (extend-env (cadr expr) val env))))))
+               (let* ((d1 (display "ERROR")) (d2 (newline))) (repl env))
+               (let* ((d1 (display (cadr expr))) (d2 (newline)))
+                 (repl (extend-env (cadr expr) val env))))))
+
+                
         (else
          (let ((val (s7 expr env)))
            (display "cs305: ")
